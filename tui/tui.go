@@ -132,6 +132,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "f3":
 			m.flags ^= reader.TagProto
 			m.processJSON()
+		case "tab", "shift+tab":
+			var cmd tea.Cmd
+			if m.typeName.Focused() {
+				m.typeName.Blur()
+				cmd = m.jsonInput.Focus()
+			} else {
+				m.jsonInput.Blur()
+				cmd = m.typeName.Focus()
+			}
+			return m, cmd
 		}
 
 	case tea.WindowSizeMsg:
